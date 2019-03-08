@@ -6,6 +6,11 @@
   * 2019/3/8
   * Version1
   * 
+  * Some Thought:
+  * 1. Sensor to get precise data
+  * 2. Find the relationship between cloth type, warmth index and Apparent temperature.
+  * 3. Based on 2. give suggestions on cloth wearing.
+  *
   * #TODO:
   * 1. USE crawler to get real-time data.
   * 2. Give suggestions on cloth wearing based on apparent temperature.
