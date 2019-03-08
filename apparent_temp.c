@@ -29,11 +29,12 @@ int main(void) {
     printf("Input temperature(in centigrade):\n");
     scanf("%f", &temperature);
     
-    printf("Input relative humidity(0,1):\n");
+    printf("Input relative humidity(0.00,1.00) <e.g. 0.90>:\n");
     scanf("%f", &rh);
 
     printf("Input wind speed(m/s):\n");
     scanf("%f", &V_wind);
+
     calculate_at(temperature, rh, V_wind);
 
     return 0;
