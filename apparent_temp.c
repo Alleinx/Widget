@@ -14,10 +14,9 @@
 #include <stdio.h>
 #include <math.h>
 
-void calculate_at(float, float, float, float);
+void calculate_at(float, float, float);
 
 int main(void) {
-    float at; /* Apparent temperature */
     float temperature; /* Unit: centigrade */
     float rh; /* relative humidity, domain interval : [0,1] */
     float V_wind; /* speed of wind, unit: m/s */
@@ -30,13 +29,13 @@ int main(void) {
 
     printf("Input wind speed(m/s):\n");
     scanf("%f", &V_wind);
-    calculate_at(at, temperature, rh, V_wind);
+    calculate_at(temperature, rh, V_wind);
 
     return 0;
 }
 
-void calculate_at(float at, float temperature, float rh, float V_wind) {
-    at =  1.07 * temperature + 
+void calculate_at(float temperature, float rh, float V_wind) {
+    float at =  1.07 * temperature + 
           0.2 * ( (rh / 100) * 6.105 * exp( (17.27 * temperature) / (237.7 + temperature))) - 
           0.65 * V_wind - 
           2.7;
