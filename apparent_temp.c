@@ -1,14 +1,14 @@
 /**
   * This program calculate apparent temperature based on 
-  * Robert G.Steadman's apparent temperature formular.
+  * Robert G.Steadman's apparent temperature formula.
   * 
   * 
   * 2019/3/8
   * Version1
   * 
   * #TODO:
-  * 1. USE crawler to get real-time data
-  * 2. Give suggestion on cloth wearing based on apparent temperature.
+  * 1. USE crawler to get real-time data.
+  * 2. Give suggestions on cloth wearing based on apparent temperature.
   */
 
 #include <stdio.h>
