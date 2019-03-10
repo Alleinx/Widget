@@ -3,7 +3,6 @@
 # TODO: modify data format and combine with apparent_temp
 
 import requests
-from bs4 import BeautifulSoup
 import json
 
 r = requests.get('https://www.tianqiapi.com/api/?version=v1&cityid=101280701')
@@ -17,5 +16,5 @@ for i in range(len(parsed_json['data'])):
         print(parsed_json['data'][i]['hours'][j])
 
 # relative_humidity = parsed_json['data'][0]['humidity']
-
+# use hash-table to get value
  
