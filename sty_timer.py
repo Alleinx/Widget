@@ -8,35 +8,34 @@ import time
 import tqdm
 import argparse
 
-def end_study(sty_time):
+def end_study(sty_time, terminated: bool) -> None:
+    '''
+    "Pause" Function, judge whether user want to (quit or take a break).
+    Params:
+     - sty_time: Cumulated study time.
+     - terminated: (bool), use to indicate whether reaches the time limit.
+    '''
+
     hours = sty_time // 3600
     mins = (sty_time % 3600) // 60
     print('\nTotal Sty time:', hours, 'hours,', mins, 'mins.\a')
     
-    try:
-        flag = input('Enough for today? (y/yes/^c).........').lower()
-    except KeyboardInterrupt:
-        print('\nEnjoy the rest of your day.')
-        sys.exit(0)
+    if not terminated:
+        try:
+            flag = input('Pausing, Use (quit/q/^c) to end study; Press Any Button to resume.........').lower()
+        except KeyboardInterrupt:
+            print('\nEnjoy the rest of your day.')
+            sys.exit(0)
+        
+        if flag in ['q', 'quit']:
+            print('Enjoy the rest of your day.')
+            sys.exit(0)
     
-    if flag in ['y', 'yes']:
-        print('Enjoy the rest of your day.')
-        sys.exit(0)
-    
-    try:
-        _ = input('Take a break, Press Any Button to resume...')
-    except KeyboardInterrupt:
-        print('\nEnjoy the rest of your day.')
-        sys.exit(0)  
-    
-
-def terminate(sty_time):
-    hours = sty_time // 3600
-    mins = (sty_time % 3600) // 60
-    print('Total Sty time:', hours, 'hours,', mins, 'mins.\a')
-    sys.exit(0)
     
 class Timer(tqdm.tqdm):
+    '''
+    Define Timer and output format.
+    '''
     @property
     def format_dict(self):
         d = super(Timer, self).format_dict
@@ -49,23 +48,21 @@ class Timer(tqdm.tqdm):
 
 def start_sty(mode='free', total_time=60*60*24):
     print('\nStart forcusing...\a')
-
-    hours = 0
-    mins = 0
-    secs = 0
+    terminate_flag = False
 
     if mode == 'free':
         dis_format = '[Total Study Time : {total_time}]'
     else:
-        dis_format = '{bar}| [Total Study Time : {total_time}; Remaining time : {left_time}]'
+        dis_format = '[Total Study Time : {total_time}; Remaining time : {left_time}| {bar}]'
 
     for sty_time in Timer(range(total_time), bar_format=dis_format):
         try:
             time.sleep(1)
         except KeyboardInterrupt:
-            end_study(sty_time)
-
-    terminate(total_time)
+            end_study(sty_time, terminate_flag)
+    
+    terminate_flag = True
+    end_study(total_time, terminate_flag)
 
 
 if __name__ == "__main__":
