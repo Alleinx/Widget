@@ -18,7 +18,7 @@ def end_study(sty_time, terminated: bool) -> None:
 
     hours = sty_time // 3600
     mins = (sty_time % 3600) // 60
-    print('\nTotal Sty time:', hours, 'hours,', mins, 'mins.\a')
+    print('\nTotal Sty time:', hours, 'hours,', mins, 'mins.')
     
     if not terminated:
         try:
@@ -47,7 +47,7 @@ class Timer(tqdm.tqdm):
         return d
 
 def start_sty(mode='free', total_time=60*60*24):
-    print('\nStart forcusing...\a')
+    print('\nStart forcusing...')
     terminate_flag = False
 
     if mode == 'free':
