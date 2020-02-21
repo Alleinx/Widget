@@ -11,12 +11,13 @@ tmp/
 *.bak
 *.swp
 *~.nib
+*.gliffy
+
 local.properties
 .settings/
 .loadpath
 .recommenders
 temp/
-*/*.gliffy
 
 # External tool builders
 .externalToolBuilders/
