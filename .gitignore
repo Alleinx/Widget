@@ -16,7 +16,7 @@ local.properties
 .loadpath
 .recommenders
 temp/
-*.gliffy
+*/*.gliffy
 
 # External tool builders
 .externalToolBuilders/
