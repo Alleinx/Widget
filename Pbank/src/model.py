@@ -22,12 +22,26 @@ class Bill(object):
     def __init__(self, *, bill_index: int, amount, time: str,
                  tags: list, title: str = None, note: str = 'No description'):
 
-        self._bill_index = bill_index
+        self.bill_index = bill_index
         self.tags = tags
         self.amount = amount
         self.time = time
-        self._title = title
+        self.title = title
         self.note = note
+
+    @property
+    def bill_index(self):
+        return self._bill_index
+
+    @bill_index.setter
+    def bill_index(self, value):
+        if not isinstance(value, int):
+            raise ValueError('bill index should be an integer')
+
+        if value < 0:
+            raise ValueError('bill index should >= 0')
+        else:
+            self._bill_index = value
 
     @property
     def title(self):
