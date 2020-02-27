@@ -2,6 +2,9 @@ import data_util as dao
 
 
 class ProjectAbstractFactory(object):
+    '''
+    abc class, used to define a general interface for ProjectFactory
+    '''
 
     def __init__(self, dao):
         self.data_accessor = dao
@@ -12,6 +15,29 @@ class ProjectAbstractFactory(object):
 
     def create_project(self):
         raise NotImplementedError
+
+
+class Project(object):
+    '''
+    abc class, used to define a general interface for Project
+    '''
+
+    def __init__(self, name: str, description: str):
+        self.name: str = name
+        self.description: str = description
+
+        self._bills: list = []
+        # use to store a snapshoot of data stored in db.
+
+    def add_bill(self, bill):
+        raise NotImplementedError
+
+    def update_bill(self, old_bill, new_bill):
+        raise NotImplementedError
+
+    def delete_bill(self, bill):
+        raise NotImplementedError
+
 
 
 class Bill(object):
@@ -61,26 +87,20 @@ class Bill(object):
             self._title = title
 
 
-class Project(object):
-    '''
-    Model class, project
-    '''
+class GeneralProject(Project):
 
     def __init__(self, name: str, description: str):
-        self.name: str = name
-        self.description: str = description
+        super().__init__(name, description)
 
-        self._bills: list = []
-        # use to store a snapshoot of data stored in db.
 
-    def add_bill(bill):
-        raise NotImplementedError
+    def add_bill(self, bill):
+        self._bills.append(bill)
 
-    def update_bill(bill):
-        raise NotImplementedError
+    def update_bill(self, old_bill, new_bill):
+        pass
 
-    def delete_bill(bill):
-        raise NotImplementedError
+    def delete_bill(self, bill):
+        pass
 
 
 class GeneralProjectFactory(ProjectAbstractFactory):
