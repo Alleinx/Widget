@@ -12,6 +12,7 @@ tmp/
 *.swp
 *~.nib
 *.gliffy
+*.db
 
 local.properties
 .settings/
