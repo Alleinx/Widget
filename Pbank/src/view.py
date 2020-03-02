@@ -27,7 +27,7 @@ class View(object):
                 self.project_iter_counter + max_item, len(project_list))
 
         for i, v in enumerate(range(self.project_iter_counter, sentry)):
-            print('Index [{}]:\t\t{}'.format(i, project_list[v]))
+            print('Project Index [{}]:\t\t{}'.format(i, project_list[v]))
 
     def display_selected_project(self, project_name, max_item=10):
         '''
