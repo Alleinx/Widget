@@ -38,9 +38,21 @@ class DAO(object):
         else:
             return False
 
-    def save(self, project):
+    def insert_items(self):
         '''
-        save changes of project
+        Insert items into a specific table
+        '''
+        raise NotImplementedError
+
+    def delete_items(self):
+        '''
+        Delete items from a specific table
+        '''
+        raise NotImplementedError
+
+    def update_items(self):
+        '''
+        Update items in a specific table with new value
         '''
         raise NotImplementedError
 
@@ -52,9 +64,16 @@ class DAO(object):
 
         self.visitor = visitor
 
-    def list_table_with_name(self, db_name, max_num=None) -> list:
+    def list_items_in_table_with_name(self, table_name: str, max_num=None) -> list:
+        '''
+        This method list items in db table with name
+        - Params:
+            - table_name(str): indicate the target db table
+            - max_num: indicate how many items will be listed
+        '''
+
         table_result = self._curr.execute(
-                            '''SELECT * FROM {db_name}'''.format(db_name=db_name))
+                            '''SELECT * FROM {table_name}'''.format(table_name=table_name))
         if not max_num:
             result = table_result.fetchall()
         else:
@@ -75,7 +94,7 @@ class DAO(object):
             print('exist_project Table already exist.')
 
         # Store all items in exist_project TABLE into project_list
-        self.project_list = self.list_table_with_name(self.exist_project)
+        self.project_list = self.list_items_in_table_with_name(self.exist_project)
 
         print(self.project_list)
 
@@ -113,6 +132,32 @@ class GeneralProjectDAO(DAO):
         # Add created table name into the self.project_list here
         self.project_list.append(project_name)
 
+    def insert_items(self, table_name: str, items: iterable[Bill]):
+        # TODO: get the index of last bill and store it into index
+        index = len(None)
+
+        # insert items into table:
+        for item in item:
+            value = list(index)
+            value.extend(item)
+
+            value = tuple(value)
+            index += 1
+            self._curr.execute('''INSERT INTO {table_name} VALUES ({item})'''.format(table_name=table_name, item=value))
+
+        self._conn.commit()
+
+    def delete_items(self, table_name: str, bill_indexs: iterable):
+        '''
+        delete bills from specified table
+        - params:
+            - table_name : indicates target table
+            - bill_index : a iterable object with bill index in it.
+        '''
+        for index in bill_index:
+            self._curr.execute('''DELETE from {table_name} where ID={id}'''.format(table_name=table_name, id=index))
+
+        self._conn.commit()
 
 if __name__ == '__main__':
     data_accessor = GeneralProjectDAO()
