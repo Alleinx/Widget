@@ -12,7 +12,7 @@ tmp/
 *.swp
 *~.nib
 *.gliffy
-*.db
+./**/*.db
 
 local.properties
 .settings/
