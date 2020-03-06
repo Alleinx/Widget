@@ -66,7 +66,9 @@ class DAO(object):
 
         self._conn.commit()
 
-    def update_project(self, old_tb_name: str, new_tb_name: str = None, project_desc: str = None):
+    def update_project(
+            self, old_tb_name: str, new_tb_name: str = None,
+            project_desc: str = None):
         if new_tb_name is None and project_desc is None:
             # there's nothing to update
             return
@@ -81,8 +83,11 @@ class DAO(object):
 
         if project_desc is not None:
             # update the project description
-            self._curr.execute('''UPDATE {tb_name} SET description={new_desc} where project_name={proj_name}'''.format(
-                tb_name=self.exist_project, new_desc=project_desc.lower(), proj_name=old_tb_name))
+            self._curr.execute(
+                '''UPDATE {tb_name} SET description={new_desc} where project_name={proj_name}'''.format(
+                    tb_name=self.exist_project,
+                    new_desc=project_desc.lower(),
+                    proj_name=old_tb_name))
 
         if new_tb_name is not None:
             # Do modification on table name:
@@ -93,8 +98,9 @@ class DAO(object):
                     'Table {new_tb} already exist, choose a differnt name'.format(
                         new_tb=new_tb_name))
                 return
-            self._curr.execute('''ALTER TABLE '{old}' RENAME TO '{new}' '''.format(
-                old=old_tb_name, new=new_tb_name))
+            self._curr.execute(
+                '''ALTER TABLE '{old}' RENAME TO '{new}' '''.format(
+                    old=old_tb_name, new=new_tb_name))
 
             # update the project list:
             # replace the old one with the new one
@@ -102,8 +108,11 @@ class DAO(object):
             self.project_list.append(new_tb_name)
 
             # rename the project name in self.exist_project
-            self._curr.execute('''UPDATE {tb_name} SET project_name = '{new_name}' where project_name='{old_name}' '''.format(
-                tb_name=self.exist_project, new_name=new_tb_name, old_name=old_tb_name))
+            self._curr.execute(
+                '''UPDATE {tb_name} SET project_name = '{new_name}' where project_name='{old_name}' '''.format(
+                    tb_name=self.exist_project,
+                    new_name=new_tb_name,
+                    old_name=old_tb_name))
 
         self._conn.commit()
 
@@ -134,7 +143,8 @@ class DAO(object):
         '''
         raise NotImplementedError
 
-    def list_items_in_table_with_name(self, table_name: str, max_num: int = None) -> list:
+    def list_items_in_table_with_name(
+            self, table_name: str, max_num: int = None) -> list:
         '''
         This method list items in db table with name
         - Params:
@@ -167,8 +177,9 @@ class DAO(object):
                 'Project {name} doesn\'t exist'.format(name=project_name))
             return
 
-        msg = self._curr.execute('''SELECT * FROM {table} WHERE project_name='{proj_name}' '''.format(
-            table=self.exist_project, proj_name=project_name))
+        msg = self._curr.execute(
+            '''SELECT * FROM {table} WHERE project_name='{proj_name}' '''.format(
+                table=self.exist_project, proj_name=project_name))
 
         return msg.fetchall()
 
@@ -197,11 +208,11 @@ class GeneralProjectDAO(DAO):
         super().__init__()
 
         # used in create a new General Project
-        self.project_tb_schema = '''bill_index INT PRIMARY KEY NOT NULL, 
+        self.project_tb_schema = '''bill_index INT PRIMARY KEY NOT NULL,
                                     title STRING NOT NULL,
                                     note STRING,
-                                    time STRING NOT NULL, 
-                                    amount FLOAT NOT NULL, 
+                                    time STRING NOT NULL,
+                                    amount FLOAT NOT NULL,
                                     type STRING NOT NULL'''
 
     def create_project(self, project_name: str, proj_desc: str):
@@ -239,8 +250,11 @@ class GeneralProjectDAO(DAO):
         self.project_list.append(project_name)
 
         # Update self.exist_table here:
-        self._curr.execute('''INSERT INTO {table_name} (project_name, description) VALUES ('{proj_name}', '{proj_desc}')'''.format(
-            table_name=self.exist_project, proj_name=project_name, proj_desc=proj_desc))
+        self._curr.execute(
+            '''INSERT INTO {table_name} (project_name, description) VALUES ('{proj_name}', '{proj_desc}')'''.format(
+                table_name=self.exist_project,
+                proj_name=project_name,
+                proj_desc=proj_desc))
 
         # save changes
         self._conn.commit()
@@ -259,8 +273,9 @@ class GeneralProjectDAO(DAO):
 
             value = tuple(value)
             index += 1
-            self._curr.execute('''INSERT INTO {table_name} VALUES ({item})'''.format(
-                table_name=table_name, item=value))
+            self._curr.execute(
+                '''INSERT INTO {table_name} VALUES ({item})'''.format(
+                    table_name=table_name, item=value))
 
         self._conn.commit()
 
@@ -273,8 +288,9 @@ class GeneralProjectDAO(DAO):
         '''
 
         for index in bill_index:
-            self._curr.execute('''DELETE from {table_name} where ID={id}'''.format(
-                table_name=table_name, id=index))
+            self._curr.execute(
+                '''DELETE from {table_name} where ID={id}'''.format(
+                    table_name=table_name, id=index))
 
         self._conn.commit()
 
