@@ -13,6 +13,7 @@ tmp/
 *~.nib
 *.gliffy
 ./**/*.db
+Pbank/src/data/pbank.db
 
 local.properties
 .settings/
