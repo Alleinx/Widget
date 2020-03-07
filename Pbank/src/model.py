@@ -39,17 +39,15 @@ class Project(object):
         raise NotImplementedError
 
 
-
 class Bill(object):
     '''
     Used to store transfer record
     '''
 
-    def __init__(self, *, bill_index: int, amount, time: str,
-                 tags: list, title: str = None, note: str = 'No description'):
+    def __init__(self, bill_index: int, title: str,
+                 note: str, time: str, amount: float):
 
         self.bill_index = bill_index
-        self.tags = tags
         self.amount = amount
         self.time = time
         self.title = title
@@ -86,12 +84,14 @@ class Bill(object):
         else:
             self._title = title
 
+    def __str__(self):
+        return '({self.bill_index}, \'{self.title}\', \'{self.note}\', \'{self.time}\', {self.amount})'.format(self=self)
+
 
 class GeneralProject(Project):
 
     def __init__(self, name: str, description: str):
         super().__init__(name, description)
-
 
     def add_bill(self, bill):
         self._bills.append(bill)

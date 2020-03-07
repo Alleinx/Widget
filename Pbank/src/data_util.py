@@ -26,6 +26,9 @@ class DAO(object):
         # indicate the schema of project table
         self.project_tb_schema = None
 
+        # indicate the schema of bill insertion
+        self.bill_modify_schema = None
+
         # init db
         self.__init_db()
 
@@ -66,9 +69,18 @@ class DAO(object):
 
         self._conn.commit()
 
-    def update_project(
-            self, old_tb_name: str, new_tb_name: str = None,
-            project_desc: str = None):
+    def update_project(self, old_tb_name: str, new_tb_name: str = None,
+                       project_desc: str = None):
+        '''
+        General goal:
+            - update a project
+        Behavior:
+            - If the project to be updated doesn't exist -> ValueError
+            - If new_tb_name is provided: 
+                - if the new_tb_name is not occupied, update the project name with new_tb_name. else -> ValueError
+            - If project_desc is provided -> update the project description with project_desc
+        '''
+
         if new_tb_name is None and project_desc is None:
             # there's nothing to update
             return
@@ -117,6 +129,11 @@ class DAO(object):
         self._conn.commit()
 
     def project_exist(self, project_name: str) -> bool:
+        '''
+        General goal:
+            - Check whether the project already exist or not.
+        '''
+
         if project_name in self.project_list:
             return True
         else:
@@ -143,12 +160,12 @@ class DAO(object):
         '''
         raise NotImplementedError
 
-    def list_items_in_table_with_name(
-            self, table_name: str, max_num: int = None) -> list:
+    def list_items_in_table_with_name(self, table_name: str, max_num: int = None) -> list:
         '''
-        This method list items in db table with name
-        - Params:
-            - table_name(str): indicate the target db table
+        General goal:
+            - This method list items in specified table in a DB.
+        Params:
+            - table_name(str): indicate the target db table.
             - max_num: indicate how many items will be listed
         '''
 
@@ -164,19 +181,22 @@ class DAO(object):
 
     def project_info(self, project_name: str) -> tuple:
         '''
-        General:
+        General goal:
             - List the project info from Table {exist_table}
         Return format:
             - (project_name, project_description)
         '''
 
+        # get target project name
         project_name = project_name.lower()
 
+        # if project doesn't exist
         if project_name not in self.project_list:
             raise ValueError(
                 'Project {name} doesn\'t exist'.format(name=project_name))
             return
 
+        # get the target project info
         msg = self._curr.execute(
             '''SELECT * FROM {table} WHERE project_name='{proj_name}' '''.format(
                 table=self.exist_project, proj_name=project_name))
@@ -184,6 +204,11 @@ class DAO(object):
         return msg.fetchall()
 
     def __init_db(self):
+        '''
+        General goal:
+            - Init the database
+        '''
+
         print('Init databases')
 
         # Build the table for project description.
@@ -212,8 +237,9 @@ class GeneralProjectDAO(DAO):
                                     title STRING NOT NULL,
                                     note STRING,
                                     time STRING NOT NULL,
-                                    amount FLOAT NOT NULL,
-                                    type STRING NOT NULL'''
+                                    amount FLOAT NOT NULL'''
+
+        self.bill_modify_schema = 'bill_index,title,note,time,amount'
 
     def create_project(self, project_name: str, proj_desc: str):
         '''
@@ -263,21 +289,37 @@ class GeneralProjectDAO(DAO):
         '''
         bills: iterable[Bill]
         '''
-        # TODO: get the index of last bill and store it into index
-        index = len(None)
+        if not bills:
+            # bills is empty, just return
+            return
+
+        # get the index of last bill and store it into index
+        if table_name not in self.project_list:
+            raise ValueError(
+                '{project_name} doesn\'t exist!'.format(
+                    project_name=table_name))
+            return
+            
+        sql = 'SELECT count(*) FROM {table}'.format(table=table_name)
+        index = self._curr.execute(sql).fetchone()[0]
+
+        # Check whether the bill index is correct:
+        # After deletion, some index can be missing.
+        # FIXME: could change to self.get_last_bill_index()
+        if bills[0].bill_index < index:
+            raise ValueError('Invalid Bill index.')
+            return
 
         # insert bills into table:
         for item in bills:
-            value = list(index)
-            value.extend(item)
+            item = str(item)
 
-            value = tuple(value)
-            index += 1
             self._curr.execute(
-                '''INSERT INTO {table_name} VALUES ({item})'''.format(
-                    table_name=table_name, item=value))
+                '''INSERT INTO {table_name} ({schema}) VALUES {item}'''.format(
+                    table_name=table_name, schema=self.bill_modify_schema, item=item))
 
         self._conn.commit()
+        print('Successful insert {count} bills.'.format(count=len(bills)))
 
     def delete_bills(self, table_name: str, bill_index):
         '''
@@ -286,13 +328,24 @@ class GeneralProjectDAO(DAO):
             - table_name : indicates target table
             - bill_index: iterable : a iterable object with bill index in it.
         '''
+        # FIXME: add checking
 
         for index in bill_index:
             self._curr.execute(
-                '''DELETE from {table_name} where ID={id}'''.format(
+                '''DELETE from {table_name} where bill_index={id}'''.format(
                     table_name=table_name, id=index))
 
         self._conn.commit()
+        print('Successful delect {count} bills.'.format(count=len(bill_index)))
+    
+    def update_bills(self, table_name: str, bills):
+        raise NotImplementedError
+
+    def get_last_bill_index(self, table_name:str):
+        '''
+        used in bill factory init
+        '''
+        raise NotImplementedError
 
 
 if __name__ == '__main__':
@@ -303,6 +356,18 @@ if __name__ == '__main__':
     except ValueError:
         pass
 
-    print(data_accessor.project_list)
-    data_accessor.delete_project('test')
-    print(data_accessor.project_list)
+    # For temp testing:
+    import model
+
+    data = [
+        model.Bill(0, 'bill1', 'this is note for bill1', '2020/3/8', 100),
+        model.Bill(1, 'bill2', 'this is note for bill2', '2020/3/8', -100),
+        model.Bill(2, 'bill3', 'this is note for bill3', '2020/3/8', 100)
+    ]
+
+    try:
+        data_accessor.insert_bills('test', data)
+    except:
+        pass
+
+    data_accessor.delete_bills('test', [0,1,2])
