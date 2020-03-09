@@ -341,7 +341,7 @@ class GeneralProjectDAO(DAO):
                     table_name=table_name, id=index))
 
         self._conn.commit()
-        print('Successful delect {count} bills.'.format(count=len(bill_index)))
+        print('Successful delete {count} bills.'.format(count=len(bill_index)))
 
     def update_bills(self, table_name: str, bills):
         '''
@@ -372,7 +372,7 @@ class GeneralProjectDAO(DAO):
 
         self._conn.commit()
 
-        print('Successfully updated', len(bills), 'bill.')
+        print('Successfully update', len(bills), 'bill.')
 
 
 if __name__ == '__main__':
