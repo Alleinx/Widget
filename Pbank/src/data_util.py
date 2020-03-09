@@ -139,21 +139,21 @@ class DAO(object):
         else:
             return False
 
-    def insert_bills(self):
+    def insert_bill(self):
         '''
         Abstract method
         Insert bills into a specific table
         '''
         raise NotImplementedError
 
-    def delete_bills(self):
+    def delete_bill(self):
         '''
         Abstract method
         Delete bills from a specific table
         '''
         raise NotImplementedError
 
-    def update_bills(self):
+    def update_bill(self):
         '''
         Abstract method
         Update bills in a specific table with new value
@@ -288,7 +288,7 @@ class GeneralProjectDAO(DAO):
         # save changes
         self._conn.commit()
 
-    def insert_bills(self, table_name: str, bills):
+    def insert_bill(self, table_name: str, bills):
         '''
         Insert bills into table with name {table_name}, the bill_index is set to autoincrement.
 
@@ -320,7 +320,7 @@ class GeneralProjectDAO(DAO):
         self._conn.commit()
         print('Successful insert {count} bills.'.format(count=len(bills)))
 
-    def delete_bills(self, table_name: str, bill_index):
+    def delete_bill(self, table_name: str, bill_index):
         '''
         delete bills from specified table
         - params:
@@ -343,7 +343,7 @@ class GeneralProjectDAO(DAO):
         self._conn.commit()
         print('Successful delete {count} bills.'.format(count=len(bill_index)))
 
-    def update_bills(self, table_name: str, bills):
+    def update_bill(self, table_name: str, bills):
         '''
         general:
             - update all bill in bills for target project {table_name}
@@ -392,7 +392,7 @@ if __name__ == '__main__':
         model.Bill(2, 'walsdf3', 'this is note for bill3', '2020/3/8', 101230)
     ]
 
-    # data_accessor.insert_bills('hello', data)
-    data_accessor.update_bills('hello', [data[2]])
+    # data_accessor.insert_bill('hello', data)
+    data_accessor.update_bill('hello', [data[2]])
 
-    # data_accessor.delete_bills('hello', [0,1,2])
+    # data_accessor.delete_bill('hello', [0,1,2])
