@@ -169,6 +169,8 @@ class DAO(object):
             - max_num: indicate how many items will be listed
         '''
 
+        table_name = table_name.lower()
+
         table_result = self._curr.execute(
             '''SELECT * FROM {table_name}'''.format(table_name=table_name))
 
@@ -233,13 +235,13 @@ class GeneralProjectDAO(DAO):
         super().__init__()
 
         # used in create a new General Project
-        self.project_tb_schema = '''bill_index INT PRIMARY KEY NOT NULL,
+        self.project_tb_schema = '''bill_index INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                                     title STRING NOT NULL,
                                     note STRING,
                                     time STRING NOT NULL,
                                     amount FLOAT NOT NULL'''
 
-        self.bill_modify_schema = 'bill_index,title,note,time,amount'
+        self.bill_modify_schema = 'title,note,time,amount'
 
     def create_project(self, project_name: str, proj_desc: str):
         '''
@@ -287,27 +289,21 @@ class GeneralProjectDAO(DAO):
 
     def insert_bills(self, table_name: str, bills):
         '''
+        Insert bills into table with name {table_name}, the bill_index is set to autoincrement.
+
         bills: iterable[Bill]
         '''
+
         if not bills:
             # bills is empty, just return
             return
 
+        table_name = table_name.lower()
         # get the index of last bill and store it into index
         if table_name not in self.project_list:
             raise ValueError(
                 '{project_name} doesn\'t exist!'.format(
                     project_name=table_name))
-            return
-            
-        sql = 'SELECT count(*) FROM {table}'.format(table=table_name)
-        index = self._curr.execute(sql).fetchone()[0]
-
-        # Check whether the bill index is correct:
-        # After deletion, some index can be missing.
-        # FIXME: could change to self.get_last_bill_index()
-        if bills[0].bill_index < index:
-            raise ValueError('Invalid Bill index.')
             return
 
         # insert bills into table:
@@ -328,7 +324,13 @@ class GeneralProjectDAO(DAO):
             - table_name : indicates target table
             - bill_index: iterable : a iterable object with bill index in it.
         '''
-        # FIXME: add checking
+        table_name = table_name.lower()
+
+        if table_name not in self.project_list:
+            raise ValueError(
+                '{project_name} doesn\'t exist!'.format(
+                    project_name=table_name))
+            return
 
         for index in bill_index:
             self._curr.execute(
@@ -337,22 +339,44 @@ class GeneralProjectDAO(DAO):
 
         self._conn.commit()
         print('Successful delect {count} bills.'.format(count=len(bill_index)))
-    
-    def update_bills(self, table_name: str, bills):
-        raise NotImplementedError
 
-    def get_last_bill_index(self, table_name:str):
+    def update_bills(self, table_name: str, bills):
         '''
-        used in bill factory init
+        general:
+            - update all bill in bills for target project {table_name}
+        args:
+            - bills: list[bill]
+            - table_name: str, target project table name.
         '''
-        raise NotImplementedError
+
+        table_name = table_name.lower()
+
+        if table_name not in self.project_list:
+            raise ValueError(
+                '{project_name} doesn\'t exist!'.format(
+                    project_name=table_name))
+            return
+
+        for bill in bills:
+            sql = '''UPDATE {tb_name} SET 
+                    title='{bill.title}', 
+                    note='{bill.note}',
+                    time='{bill.time}', 
+                    amount={bill.amount} 
+                    where bill_index = {bill.bill_index}'''.format(tb_name=table_name,
+                                                                   bill=bill)
+            self._curr.execute(sql)
+
+        self._conn.commit()
+
+        print('Successfully updated', len(bills), 'bill.')
 
 
 if __name__ == '__main__':
     data_accessor = GeneralProjectDAO()
 
     try:
-        data_accessor.create_project('test', 'this is a test stirng')
+        data_accessor.create_project('hello', 'this is a test stirng')
     except ValueError:
         pass
 
@@ -362,12 +386,10 @@ if __name__ == '__main__':
     data = [
         model.Bill(0, 'bill1', 'this is note for bill1', '2020/3/8', 100),
         model.Bill(1, 'bill2', 'this is note for bill2', '2020/3/8', -100),
-        model.Bill(2, 'bill3', 'this is note for bill3', '2020/3/8', 100)
+        model.Bill(2, 'walsdf3', 'this is note for bill3', '2020/3/8', 101230)
     ]
 
-    try:
-        data_accessor.insert_bills('test', data)
-    except:
-        pass
+    # data_accessor.insert_bills('hello', data)
+    data_accessor.update_bills('hello', [data[2]])
 
-    data_accessor.delete_bills('test', [0,1,2])
+    # data_accessor.delete_bills('hello', [0,1,2])

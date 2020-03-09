@@ -85,7 +85,7 @@ class Bill(object):
             self._title = title
 
     def __str__(self):
-        return '({self.bill_index}, \'{self.title}\', \'{self.note}\', \'{self.time}\', {self.amount})'.format(self=self)
+        return '(\'{self.title}\', \'{self.note}\', \'{self.time}\', {self.amount})'.format(self=self)
 
 
 class GeneralProject(Project):
