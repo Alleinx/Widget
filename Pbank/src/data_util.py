@@ -76,7 +76,7 @@ class DAO(object):
             - update a project
         Behavior:
             - If the project to be updated doesn't exist -> ValueError
-            - If new_tb_name is provided: 
+            - If new_tb_name is provided:
                 - if the new_tb_name is not occupied, update the project name with new_tb_name. else -> ValueError
             - If project_desc is provided -> update the project description with project_desc
         '''
@@ -160,7 +160,8 @@ class DAO(object):
         '''
         raise NotImplementedError
 
-    def list_items_in_table_with_name(self, table_name: str, max_num: int = None) -> list:
+    def list_items_in_table_with_name(
+            self, table_name: str, max_num: int = None) -> list:
         '''
         General goal:
             - This method list items in specified table in a DB.
@@ -312,7 +313,9 @@ class GeneralProjectDAO(DAO):
 
             self._curr.execute(
                 '''INSERT INTO {table_name} ({schema}) VALUES {item}'''.format(
-                    table_name=table_name, schema=self.bill_modify_schema, item=item))
+                    table_name=table_name,
+                    schema=self.bill_modify_schema,
+                    item=item))
 
         self._conn.commit()
         print('Successful insert {count} bills.'.format(count=len(bills)))
@@ -358,11 +361,11 @@ class GeneralProjectDAO(DAO):
             return
 
         for bill in bills:
-            sql = '''UPDATE {tb_name} SET 
-                    title='{bill.title}', 
+            sql = '''UPDATE {tb_name} SET
+                    title='{bill.title}',
                     note='{bill.note}',
-                    time='{bill.time}', 
-                    amount={bill.amount} 
+                    time='{bill.time}',
+                    amount={bill.amount}
                     where bill_index = {bill.bill_index}'''.format(tb_name=table_name,
                                                                    bill=bill)
             self._curr.execute(sql)
