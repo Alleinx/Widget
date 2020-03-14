@@ -181,6 +181,24 @@ class DAO(object):
             result = table_result.fetchmany(max_num)
 
         return result
+    
+    def get_project_description(self, project_name: str) -> str:
+        sql = "SELECT description FROM {self.exist_project} WHERE project_name='{name}'".format(self=self, name=project_name)
+        result = self._curr.execute(sql).fetchone()[0]
+        return result
+
+    
+    def get_project_bill(self, project_name: str) -> list:
+        """get all bills of given project
+        
+        Arguments:
+            project_name {str} -- indicate target project
+        
+        Returns:
+            list -- a list contains all bills of given project
+        """
+        bills = self.list_items_in_table_with_name(project_name)
+        return bills
 
     def project_info(self, project_name: str) -> tuple:
         '''

@@ -7,7 +7,7 @@ from view import View
 
 class Controller(object):
     def __init__(self, view: View):
-        self.project_handler = dao.GeneralProjectDAO()
+        self.project_manager = model.GeneralProjectFactory()
 
         # store ui
         self.view = view
@@ -15,8 +15,6 @@ class Controller(object):
         # Indicate whether the current window is modifying project object.
         self.current_window_is_project = True
 
-        # For temporal testing
-        self.project_list = [str(i) for i in range(115)]
 
         # Total amount of items displayed on single page.
         self.DISPLAY_ITEM_AMOUNT = 10
@@ -26,28 +24,47 @@ class Controller(object):
             if self.current_window_is_project:
                 # Display Project.
                 self.view.display_project(
-                    self.project_list,
+                    self.project_manager.project_list,
                     max_item=self.DISPLAY_ITEM_AMOUNT,
                     list_project=True)
             else:
                 # Display Bill.
                 print('Display Bill')
                 raise NotImplementedError
+        elif command[:2] == 'de':
+            if self.current_window_is_project:
+                try:
+                    offset = int(command[2:])
+                    if 0 <= offset < self.DISPLAY_ITEM_AMOUNT and offset < len(self.project_manager.project_list):
+                        base = self.view.project_iter_counter
+                        display_index = base + offset
+                        project = self.project_manager.project_list[display_index]
+                        print(f'Project description of project <{project.name}>:')
+                        print(f'--- {project.description}')
+
+                    else:
+                        print('Invalid Index Number') 
+                except ValueError:
+                    print('Invalid command {}'.format(command))
+            else:
+                print('Display Bill information')
+                raise NotImplementedError
+                
 
         elif command[0] == 'd':
             if self.current_window_is_project:
                 # Delete Project.
                 try:
                     offset = int(command[1:])
-                    if 0 <= offset < self.DISPLAY_ITEM_AMOUNT:
+                    if 0 <= offset < self.DISPLAY_ITEM_AMOUNT and offset < len(self.project_manager.project_list):
                         base = self.view.project_iter_counter
                         delete_index = base + offset
                         print('Delete Project', command)
                         print(
                             'Delete Index {}, delete name {}'.format(
                                 delete_index,
-                                self.project_list[delete_index]))
-                        del self.project_list[delete_index]
+                                self.project_manager.project_list[delete_index]))
+                        del self.project_manager.project_list[delete_index]
                     else:
                         print('Invalid Index Number')
 
@@ -66,7 +83,7 @@ class Controller(object):
         elif command == 'n':
             if self.current_window_is_project:
                 self.view.display_project(
-                    self.project_list, max_item=self.DISPLAY_ITEM_AMOUNT)
+                    self.project_manager.project_list, max_item=self.DISPLAY_ITEM_AMOUNT)
             else:
                 # Display selected Bill.
                 raise NotImplementedError
@@ -74,7 +91,7 @@ class Controller(object):
         elif command == 'b':
             if self.current_window_is_project:
                 self.view.display_project(
-                    self.project_list,
+                    self.project_manager.project_list,
                     max_item=self.DISPLAY_ITEM_AMOUNT,
                     backward=True)
             else:
@@ -89,7 +106,9 @@ class Controller(object):
             if self.current_window_is_project:
                 # Display Bills of selected project
                 # self.view.display_bill()
-                raise NotImplementedError
+                choice = int(command)
+                print(self.project_manager.project_list)
+                # self.view.display_project()
             else:
                 # Display details of selected Bill.
                 # self.view.display_notes()

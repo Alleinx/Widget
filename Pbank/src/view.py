@@ -36,17 +36,17 @@ class View(object):
         '''
         raise NotImplementedError
 
-    def display_prompt(self):
+    def display_prompt(self, target='project'):
+
         print(' Welcome to Pbank '.center(self.PROMOTE_STR_LEN, '-'))
         print(
             ' Pbank, A self use tally book '.center(
                 self.PROMOTE_STR_LEN, '-'))
         print(' Menu '.center(self.PROMOTE_STR_LEN, '-'))
-        print(
-            '-----1. l: Display current projects'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print(
-            '-----2. d[index] : Delete [index]th project'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print('-----3. cp: Create a new project'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print('-----4. n: Next page'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print('-----5. b: Previous page'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print('-----6. q: Quit'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print(f'-----1. l: List current {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print(f'-----2. de[index]: Display Description of [index]th {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print(f'-----3. d[index] : Delete [index]th {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print(f'-----4. cp: Create a new {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print('-----5. n: Next page.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print('-----6. b: Previous page.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print('-----7. q: Quit.'.ljust(self.PROMOTE_STR_LEN, ' '))
