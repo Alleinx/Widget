@@ -1,25 +1,6 @@
 import data_util as dao
 
 
-class ProjectAbstractFactory(object):
-    '''
-    abc class, used to define a general interface for ProjectFactory
-    '''
-
-    def __init__(self, dao):
-        self.data_accessor = dao
-        self.project_list = []
-        self._init()
-
-    def fetch_project(self):
-        raise NotImplementedError
-
-    def create_project(self):
-        raise NotImplementedError
-
-    def _init(self):
-        raise NotImplementedError
-
 class Project(object):
     '''
     abc class, used to define a general interface for Project
@@ -46,10 +27,26 @@ class Project(object):
 
     def __repr__(self):
         return f'(Project: {self.name}; Project description: {self.description})'
-    
+
     def __str__(self):
         return f'{self.name}'
-        
+
+
+class GeneralProject(Project):
+
+    def __init__(self, name: str, description: str):
+        super().__init__(name, description)
+
+    def add_bill(self, bill):
+        bill = Bill(*bill)
+        self._bills.append(bill)
+
+    def update_bill(self, old_bill, new_bill):
+        pass
+
+    def delete_bill(self, bill):
+        pass
+
 
 class Bill(object):
     '''
@@ -67,7 +64,7 @@ class Bill(object):
 
     def __str__(self):
         return '(\'{self.title}\', \'{self.note}\', \'{self.time}\', {self.amount})'.format(self=self)
-    
+
     def __repr__(self):
         return f'({self.time}: Bill[{self.bill_index}] <Title>: {self.title}, <Amount>: {self.amount}, <Note>: {self.note})'
 
@@ -103,20 +100,31 @@ class Bill(object):
             self._title = title
 
 
-class GeneralProject(Project):
+class ProjectAbstractFactory(object):
+    '''
+    abc class, used to define a general interface for ProjectFactory
+    '''
 
-    def __init__(self, name: str, description: str):
-        super().__init__(name, description)
+    def __init__(self, dao):
+        self.data_accessor = dao
+        self.project_list = None
+        self._init()
 
-    def add_bill(self, bill):
-        bill = Bill(*bill)
-        self._bills.append(bill)
+    def fetch_project(self):
+        raise NotImplementedError
 
-    def update_bill(self, old_bill, new_bill):
-        pass
+    def create_project(self):
+        raise NotImplementedError
 
-    def delete_bill(self, bill):
-        pass
+    def delete_project(self):
+        raise NotImplementedError
+
+    def update_project(self):
+        raise NotImplementedError
+
+    def _init(self):
+        raise NotImplementedError
+
 
 
 class GeneralProjectFactory(ProjectAbstractFactory):
@@ -128,22 +136,25 @@ class GeneralProjectFactory(ProjectAbstractFactory):
         super().__init__(dao.GeneralProjectDAO())
 
     def _init(self):
+        self.project_list = dict()
+
         for project in self.data_accessor.project_list:
-            project_description = self.data_accessor.get_project_description(project)
+            project_description = self.data_accessor.get_project_description(
+                project)
 
             new_project = GeneralProject(project, project_description)
 
             project_bill = self.data_accessor.get_project_bill(project)
             for item in project_bill:
                 new_project.add_bill(item)
-            
-            self.project_list.append(new_project)
+
+            self.project_list[project] = new_project
 
     def fetch_project(self, project_name: str) -> Project:
         '''
         This method tends to build and return a Project with project_name
         '''
-        if not self.data_accessor.project_exist(project_name):
+        if project_name not in self.project_list:
             return ValueError(
                 'Project {} doesn\'t exist.'.format(project_name))
         else:
@@ -151,21 +162,34 @@ class GeneralProjectFactory(ProjectAbstractFactory):
             fetch data from data_accessor
                 and build the Project object.
             '''
-            raise NotImplementedError
+            return self.project_list[project_name]
 
     def create_project(self, project_name: str,
-                       description='Project Description'):
+                       description='Project Description') -> Project:
         '''
         This method tends to create a new project
         '''
-        if self.data_accessor.project_exist(project_name):
+        if project_name in self.project_list:
             raise ValueError('Project {} already exist.'.format(project_name))
         else:
             project = Project(project_name, description)
+            self.project_list[project_name] = project
+            self.data_accessor.create_project(project_name, description)
             return project
+    
+    def display_project_info(self) -> list:
+        """For Menu Displaying
+        
+        Returns:
+            list -- a list contains all project in the db.
+        """
+
+        return [item for item in self.project_list.values()]
+
 
 if __name__ == "__main__":
     project_manager = GeneralProjectFactory()
+    print(project_manager)
     print(project_manager.project_list)
     # print(project_manager.project_list[1])
     # print(project_manager.project_list[1].get_all_bills())

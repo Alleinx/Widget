@@ -15,7 +15,6 @@ class Controller(object):
         # Indicate whether the current window is modifying project object.
         self.current_window_is_project = True
 
-
         # Total amount of items displayed on single page.
         self.DISPLAY_ITEM_AMOUNT = 10
 
@@ -24,13 +23,14 @@ class Controller(object):
             if self.current_window_is_project:
                 # Display Project.
                 self.view.display_project(
-                    self.project_manager.project_list,
+                    self.project_manager.display_project_info(),
                     max_item=self.DISPLAY_ITEM_AMOUNT,
                     list_project=True)
             else:
                 # Display Bill.
-                print('Display Bill')
+                self.view.display_message('Display Bill', prefix='---')
                 raise NotImplementedError
+
         elif command[:2] == 'de':
             if self.current_window_is_project:
                 try:
@@ -39,17 +39,16 @@ class Controller(object):
                         base = self.view.project_iter_counter
                         display_index = base + offset
                         project = self.project_manager.project_list[display_index]
-                        print(f'Project description of project <{project.name}>:')
-                        print(f'--- {project.description}')
+                        self.view.display_message(f'Project description of project <{project.name}>:')
+                        self.view.display_message(f'{project.description}', prefix='---')
 
                     else:
-                        print('Invalid Index Number') 
+                        self.view.display_message('Invalid Index Number') 
                 except ValueError:
-                    print('Invalid command {}'.format(command))
+                    self.view.display_message('Invalid command {}'.format(command))
             else:
-                print('Display Bill information')
+                self.view.display_message('Display Bill information')
                 raise NotImplementedError
-                
 
         elif command[0] == 'd':
             if self.current_window_is_project:
@@ -59,31 +58,31 @@ class Controller(object):
                     if 0 <= offset < self.DISPLAY_ITEM_AMOUNT and offset < len(self.project_manager.project_list):
                         base = self.view.project_iter_counter
                         delete_index = base + offset
-                        print('Delete Project', command)
-                        print(
+                        self.view.display_message('Delete Project ' + command)
+                        self.view.display_message(
                             'Delete Index {}, delete name {}'.format(
                                 delete_index,
                                 self.project_manager.project_list[delete_index]))
                         del self.project_manager.project_list[delete_index]
                     else:
-                        print('Invalid Index Number')
+                        self.view.display_message('Invalid Index Number')
 
                 except ValueError:
-                    print('Invalid command {}'.format(command))
+                    self.view.display_message('Invalid command {}'.format(command))
             else:
                 # Delete Bill.
-                print('delete Bill')
+                self.view.display_message('delete Bill')
                 raise NotImplementedError
 
         elif command == 'cp':
             # create a new project
             # PROJECT MODE
-            print('Create project', command)
+            self.view.display_message('Create project', command)
 
         elif command == 'n':
             if self.current_window_is_project:
                 self.view.display_project(
-                    self.project_manager.project_list, max_item=self.DISPLAY_ITEM_AMOUNT)
+                    self.project_manager.display_project_info(), max_item=self.DISPLAY_ITEM_AMOUNT)
             else:
                 # Display selected Bill.
                 raise NotImplementedError
@@ -91,7 +90,7 @@ class Controller(object):
         elif command == 'b':
             if self.current_window_is_project:
                 self.view.display_project(
-                    self.project_manager.project_list,
+                    self.project_manager.display_project_info(),
                     max_item=self.DISPLAY_ITEM_AMOUNT,
                     backward=True)
             else:
@@ -105,17 +104,15 @@ class Controller(object):
         elif command.isdigit():
             if self.current_window_is_project:
                 # Display Bills of selected project
-                # self.view.display_bill()
-                choice = int(command)
-                print(self.project_manager.project_list)
                 # self.view.display_project()
+                raise NotImplementedError
             else:
                 # Display details of selected Bill.
                 # self.view.display_notes()
                 raise NotImplementedError
 
         else:
-            print('Unknow command: {}'.format(command))
+            self.view.display_message('Unknow command: {}'.format(command))
 
 
 if __name__ == '__main__':

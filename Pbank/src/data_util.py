@@ -327,7 +327,7 @@ class GeneralProjectDAO(DAO):
 
         # insert bills into table:
         for item in bills:
-            item = str(item)
+            item = repr(item)
 
             self._curr.execute(
                 '''INSERT INTO {table_name} ({schema}) VALUES {item}'''.format(

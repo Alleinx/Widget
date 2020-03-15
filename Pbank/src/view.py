@@ -24,7 +24,7 @@ class View(object):
                     self.project_iter_counter -= max_item
 
         sentry = min(
-                self.project_iter_counter + max_item, len(project_list))
+            self.project_iter_counter + max_item, len(project_list))
 
         for i, v in enumerate(range(self.project_iter_counter, sentry)):
             print('Project Index [{}]:\t\t{}'.format(i, project_list[v]))
@@ -43,10 +43,18 @@ class View(object):
             ' Pbank, A self use tally book '.center(
                 self.PROMOTE_STR_LEN, '-'))
         print(' Menu '.center(self.PROMOTE_STR_LEN, '-'))
-        print(f'-----1. l: List current {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print(f'-----2. de[index]: Display Description of [index]th {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print(f'-----3. d[index] : Delete [index]th {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print(f'-----4. cp: Create a new {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print(
+            f'-----1. l: List current {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print(f'-----2. de[index]: Display Description of [index]th {target}.'.ljust(
+            self.PROMOTE_STR_LEN, ' '))
+        print(
+            f'-----3. d[index] : Delete [index]th {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
+        print(
+            f'-----4. cp: Create a new {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
         print('-----5. n: Next page.'.ljust(self.PROMOTE_STR_LEN, ' '))
         print('-----6. b: Previous page.'.ljust(self.PROMOTE_STR_LEN, ' '))
         print('-----7. q: Quit.'.ljust(self.PROMOTE_STR_LEN, ' '))
+
+    def display_message(self, content, prefix='>>>'):
+        display_str = prefix + ' ' + content
+        print(display_str)
