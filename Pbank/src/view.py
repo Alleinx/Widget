@@ -29,12 +29,22 @@ class View(object):
         for i, v in enumerate(range(self.project_iter_counter, sentry)):
             print('Project Index [{}]:\t\t{}'.format(i, project_list[v]))
 
-    def display_selected_project(self, project_name, max_item=10):
+    def display_selected_project(self, bill_list, max_item=10, *, backward=False):
         '''
         display project with project_name,
         with max_item amount of items per time.
         '''
-        raise NotImplementedError
+        if not backward:
+            if self.bill_iter_counter < (len(bill_list) - max_item):
+                self.bill_iter_counter += max_item
+        else:
+            if self.bill_iter_counter >= max_item:
+                self.bill_iter_counter -= max_item
+        
+        sentry = min(self.bill_iter_counter + max_item, len(bill_list))
+        for i, v in enumerate(range(self.bill_iter_counter, sentry)):
+            print('Bill Index[{}]:\t\t{}'.format(i, bill_list[v]))
+                
 
     def display_prompt(self, target='project'):
 

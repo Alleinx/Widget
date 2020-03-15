@@ -148,7 +148,7 @@ class GeneralProjectFactory(ProjectAbstractFactory):
             for item in project_bill:
                 new_project.add_bill(item)
 
-            self.project_list[project] = new_project
+            self.project_list[new_project.name] = new_project
 
     def fetch_project(self, project_name: str) -> Project:
         '''
@@ -189,7 +189,8 @@ class GeneralProjectFactory(ProjectAbstractFactory):
 
 if __name__ == "__main__":
     project_manager = GeneralProjectFactory()
-    print(project_manager)
+    name = 'hello'
     print(project_manager.project_list)
-    # print(project_manager.project_list[1])
-    # print(project_manager.project_list[1].get_all_bills())
+    project = project_manager.project_list[name]
+    print(project.name)
+    print(project._bills)

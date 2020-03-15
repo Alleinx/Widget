@@ -105,7 +105,9 @@ class Controller(object):
             if self.current_window_is_project:
                 # Display Bills of selected project
                 # self.view.display_project()
-                raise NotImplementedError
+                choice = int(command)
+                project = self.project_manager.display_project_info()[choice]
+                self.view.display_selected_project(project._bills)
             else:
                 # Display details of selected Bill.
                 # self.view.display_notes()
