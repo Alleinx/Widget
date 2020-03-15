@@ -110,9 +110,6 @@ class ProjectAbstractFactory(object):
         self.project_list = None
         self._init()
 
-    def fetch_project(self):
-        raise NotImplementedError
-
     def create_project(self):
         raise NotImplementedError
 
@@ -150,20 +147,6 @@ class GeneralProjectFactory(ProjectAbstractFactory):
 
             self.project_list[new_project.name] = new_project
 
-    def fetch_project(self, project_name: str) -> Project:
-        '''
-        This method tends to build and return a Project with project_name
-        '''
-        if project_name not in self.project_list:
-            return ValueError(
-                'Project {} doesn\'t exist.'.format(project_name))
-        else:
-            '''
-            fetch data from data_accessor
-                and build the Project object.
-            '''
-            return self.project_list[project_name]
-
     def create_project(self, project_name: str,
                        description='Project Description') -> Project:
         '''
@@ -177,6 +160,46 @@ class GeneralProjectFactory(ProjectAbstractFactory):
             self.data_accessor.create_project(project_name, description)
             return project
     
+    def delete_project(self, project_name: str):
+        project_name = project_name.lower()
+        if project_name not in self.project_list:
+            raise ValueError(f'{project_name} doesn\'t exist.')
+            return
+
+        del self.project_list[project_name]
+        self.data_accessor.delete_project(project_name)
+    
+    def update_project(self, target_project_name: str, new_project_name: str=None, new_project_desc: str=None) -> bool:
+        if not new_project_name and not new_project_desc:
+            # nothing to update
+            return False
+        target_project_name = target_project_name.lower()
+
+        if target_project_name not in self.project_list:
+            raise ValueError(f'{project_name} doesn\'t exist.')
+            return False
+        
+        if new_project_name is not None:
+            new_name = new_project_name.lower()
+
+            if new_name is in self.project_list:
+                raise ValueError(f'{project_name} already exist.')
+                return False
+                
+            project = self.project_list[target_project_name]
+            del self.project_list[target_project_name]
+            self.project_list[new_name] = project
+        
+        if new_project_desc is not None:
+            if new_project_name is not None:
+                self.project_list[new_name].description = new_project_desc
+            else:
+                self.project_list[target_project_name].description = new_project_desc
+
+        self.data_accessor.update_project(target_project_name, new_project_name, new_project_desc)
+        return True
+
+
     def display_project_info(self) -> list:
         """For Menu Displaying
         
