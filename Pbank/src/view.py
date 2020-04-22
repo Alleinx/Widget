@@ -29,7 +29,8 @@ class View(object):
         for i, v in enumerate(range(self.project_iter_counter, sentry)):
             print('Project Index [{}]:\t\t{}'.format(i, project_list[v]))
 
-    def display_selected_project(self, bill_list, max_item=10, *, backward=False):
+    def display_selected_project(
+            self, bill_list, max_item=10, *, backward=False):
         '''
         display project with project_name,
         with max_item amount of items per time.
@@ -40,11 +41,10 @@ class View(object):
         else:
             if self.bill_iter_counter >= max_item:
                 self.bill_iter_counter -= max_item
-        
+
         sentry = min(self.bill_iter_counter + max_item, len(bill_list))
         for i, v in enumerate(range(self.bill_iter_counter, sentry)):
             print('Bill Index[{}]:\t\t{}'.format(i, bill_list[v]))
-                
 
     def display_prompt(self, target='project'):
 
@@ -55,8 +55,9 @@ class View(object):
         print(' Menu '.center(self.PROMOTE_STR_LEN, '-'))
         print(
             f'-----1. l: List current {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
-        print(f'-----2. de[index]: Display Description of [index]th {target}.'.ljust(
-            self.PROMOTE_STR_LEN, ' '))
+        print(
+            f'-----2. de[index]: Display Description of [index]th {target}.'.ljust(
+                self.PROMOTE_STR_LEN, ' '))
         print(
             f'-----3. d[index] : Delete [index]th {target}.'.ljust(self.PROMOTE_STR_LEN, ' '))
         print(

@@ -63,7 +63,8 @@ class Bill(object):
         self.note = note
 
     def __str__(self):
-        return '(\'{self.title}\', \'{self.note}\', \'{self.time}\', {self.amount})'.format(self=self)
+        return '(\'{self.title}\', \'{self.note}\', \'{self.time}\', {self.amount})'.format(
+            self=self)
 
     def __repr__(self):
         return f'({self.time}: Bill[{self.bill_index}] <Title>: {self.title}, <Amount>: {self.amount}, <Note>: {self.note})'
@@ -168,7 +169,9 @@ class GeneralProjectFactory(ProjectAbstractFactory):
         del self.project_list[project_name]
         self.data_accessor.delete_project(project_name)
 
-    def update_project(self, target_project_name: str, new_project_name: str = None, new_project_desc: str = None) -> bool:
+    def update_project(
+            self, target_project_name: str, new_project_name: str = None,
+            new_project_desc: str = None) -> bool:
         if not new_project_name and not new_project_desc:
             # nothing to update
             return False
