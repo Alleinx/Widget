@@ -13,7 +13,6 @@ tmp/
 *~.nib
 *.gliffy
 ./**/*.db
-./tag
 Pbank/src/data/pbank.db
 
 local.properties
