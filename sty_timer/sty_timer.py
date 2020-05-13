@@ -1,7 +1,7 @@
 # A little study timer.
 # Mode:
 # 1. Default: <Free Mode>: only record total study time, don't have a time limit.
-# 2. countdown: <CountDown Mode>, with timelimit,
+# 2. countdown: <CountDown Mode>, with time limit,
 
 import sys
 import time
@@ -50,7 +50,7 @@ class Timer(tqdm.tqdm):
 
 
 def start_sty(mode='free', total_time=60*60*24):
-    print('\nStart forcusing...')
+    print('\nStart focusing...')
     terminate_flag = False
 
     if mode == 'free':
