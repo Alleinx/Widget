@@ -1,0 +1,9 @@
+alias gitdir
+alias paper_notes
+alias python
+alias thinking
+alias notes
+alias study
+alias pdb='python -m ipdb'
+alias create_ctags='/usr/local/bin/ctags -R .'
+
