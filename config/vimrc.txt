@@ -1,0 +1,144 @@
+"-----------------------General Settings--------------------"
+syntax on
+
+set mouse=a
+set encoding=utf-8
+set number
+set cursorline
+set showmatch
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+
+set autoindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set nospell
+
+"---------------------color scheme---------------------------"
+colorscheme base
+set termguicolors
+let python_highlight_all = 1
+
+"-----------------------Netrw config-------------------------"
+" let g:netrw_liststyle = 3
+" let g:netrw_browse_split = 3
+" let g:netrw_winsize = 25
+" let g:netrw_banner = 0
+" let g:netrw_sort_by = 'time'
+" let g:netrw_sort_direction = 'reverse'
+autocmd FileType netrw setlocal bufhidden=delete
+
+"------------------------NERTTREE-----------------------------"
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+map <C-t> :NERDTreeToggle<CR>
+let g:NERDTreeDirArrowExpandable = '➜'
+let g:NERDTreeDirArrowCollapsible = '✭'
+" :
+" file system manager: m
+" open the selected file in a new tab: t
+" open the selected file in a horizontal window: i
+" open the selected file in a horizontal window, but stay cursor at NERTTree: gi
+" open the selected file in a vertical window: s
+" open the selected file in a vertical window, but stay cursor at NERTTree: gs
+" fold opened dir_path: x
+" fold all opened dir_path: X
+" ignore/reveal .file: I
+" full-screen display the NERDTree: A
+" *** Nevigation:
+" set current root dir to the selected dir: C
+" set current root dir to the super_dir: u
+" set current root dir to the super_dir, and remain other stuff unchanged: U
+" Refresh: r
+
+"------------------------keymaps-----------------------------"
+nmap tt o<ESC>k
+nmap <C-n> <ESC>:PymodeLintAuto<CR>
+nmap <F12> :TagbarToggle<CR>
+nmap <F3> :only<CR>
+nmap <F1> ZL
+nmap <F2> ZC
+
+inoremap <Left> <C-h>
+cnoremap <Left> <C-h>
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+"------------------------Plugins-----------------------------"
+" Vundle
+set nocompatible              " be iMproved, required
+filetype plugin on
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'mhinz/vim-startify'
+Plugin 'jiangmiao/auto-pairs'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-commentary'
+Bundle 'vim-airline/vim-airline'
+Bundle 'vim-airline/vim-airline-themes'
+Bundle 'Yggdroot/indentLine'
+Bundle 'itchyny/vim-cursorword'
+Bundle 'vim-scripts/Tabmerge'
+Bundle 'iamcco/markdown-preview.nvim'
+Bundle 'simeji/winresizer'
+" Bundle 'davidhalter/jedi-vim'
+Bundle 'bounceme/base.vim'
+Bundle 'preservim/nerdtree'
+Bundle 'python-mode/python-mode'
+Bundle 'majutsushi/tagbar'
+Bundle 'kamykn/spelunker.vim'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+" cursor style
+if $TERM_PROGRAM =~ "iTerm"
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+endif
+
+" jedi vim:
+" let g:jedi#completions_enabled = 0
+" let g:jedi#completions_command = "<C-n>"
+" let g:jedi#goto_definitions_command = "L"
+" let g:jedi#popup_on_dot=1
+" let g:jedi#show_call_signitures = "0"
+
+" pymode:
+let g:pymode_lint_checkers = ['pyflakes', 'mccabe']
+let g:pymode_lint_on_fly = 1
+let g:pymode_lint_on_write = 1
+let g:pymode_lint_message = 1
+let g:pymode_options_colorcolumn = 0
+
+" ctags
+set tags=tags
+
+" spell checker
+let g:spelunker_target_min_char_len = 0
+let g:spelunker_max_suggest_words = 7
+let g:spelunker_max_hi_words_each_buf = 50
+
+highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#f0edcc
