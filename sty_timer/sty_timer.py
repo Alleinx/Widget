@@ -8,6 +8,11 @@ import time
 import tqdm
 import argparse
 
+def get_time_str() -> str:
+    local_time = time.localtime()
+    time_str = time.strftime('-> [%m-%d, %H:%M:%S]', local_time)
+
+    return time_str
 
 def end_study(sty_time, terminated: bool) -> None:
     '''
@@ -22,16 +27,21 @@ def end_study(sty_time, terminated: bool) -> None:
     print('\nTotal Sty time:', hours, 'hours,', mins, 'mins.')
 
     if not terminated:
+        time_str = get_time_str()
+
         try:
             flag = input(
-                'Pausing, Use (quit/q/^c) to end study; Press Any Button to resume.........').lower()
+                '{} Pausing, Use (quit/q/^c) to end study; Press Any Button to resume.........'.format(time_str)).lower()
         except KeyboardInterrupt:
-            print('\nEnjoy the rest of your day.')
+            print('\n{} Enjoy the rest of your day.'.format(time_str))
             sys.exit(0)
 
         if flag in ['q', 'quit']:
-            print('Enjoy the rest of your day.')
+            print('{} Enjoy the rest of your day.'.format(time_str))
             sys.exit(0)
+
+        time_str = get_time_str()
+        print('{} Back to work.'.format(time_str))
 
 
 class Timer(tqdm.tqdm):
@@ -50,7 +60,9 @@ class Timer(tqdm.tqdm):
 
 
 def start_sty(mode='free', total_time=60*60*24):
-    print('\nStart focusing...')
+    time_str = get_time_str()
+
+    print('\n{} Start focusing...'.format(time_str))
     terminate_flag = False
 
     if mode == 'free':
