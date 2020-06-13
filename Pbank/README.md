@@ -1,2 +1,2 @@
-## Pbank, a self use tally book.
+## [Dep] Pbank, a self use tally book.
 
