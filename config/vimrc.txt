@@ -19,9 +19,10 @@ set expandtab
 set nospell
 
 "---------------------color scheme---------------------------"
-colorscheme base
+" colorscheme base
+colorscheme peaksea
 set termguicolors
-let python_highlight_all = 1
+set background=dark
 
 "-----------------------Netrw config-------------------------"
 " let g:netrw_liststyle = 3
@@ -37,6 +38,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 map <C-t> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrowExpandable = '➜'
 let g:NERDTreeDirArrowCollapsible = '✭'
+let g:NERDTreeBookmarksSort=0
 " :
 " file system manager: m
 " open the selected file in a new tab: t
@@ -91,12 +93,12 @@ Bundle 'itchyny/vim-cursorword'
 Bundle 'vim-scripts/Tabmerge'
 Bundle 'iamcco/markdown-preview.nvim'
 Bundle 'simeji/winresizer'
-" Bundle 'davidhalter/jedi-vim'
 Bundle 'bounceme/base.vim'
 Bundle 'preservim/nerdtree'
-Bundle 'python-mode/python-mode'
 Bundle 'majutsushi/tagbar'
 Bundle 'kamykn/spelunker.vim'
+Bundle 'morhetz/gruvbox'
+Bundle 'vim-scripts/peaksea'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -119,26 +121,30 @@ if $TERM_PROGRAM =~ "iTerm"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
 
-" jedi vim:
-" let g:jedi#completions_enabled = 0
-" let g:jedi#completions_command = "<C-n>"
-" let g:jedi#goto_definitions_command = "L"
-" let g:jedi#popup_on_dot=1
-" let g:jedi#show_call_signitures = "0"
-
-" pymode:
-let g:pymode_lint_checkers = ['pyflakes', 'mccabe']
-let g:pymode_lint_on_fly = 1
-let g:pymode_lint_on_write = 1
-let g:pymode_lint_message = 1
-let g:pymode_options_colorcolumn = 0
-
-" ctags
-set tags=tags
-
 " spell checker
 let g:spelunker_target_min_char_len = 0
 let g:spelunker_max_suggest_words = 7
 let g:spelunker_max_hi_words_each_buf = 50
 
 highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#f0edcc
+
+" -----------------------------------------------------------------------------------------
+" vim-airline:
+let g:airline_theme='bubblegum'
+let g:airline_section_b = '%{strftime("%c")}'
+
+" format of status bar:
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+let g:airline_powerlines_fonts = 1
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.dirty='⚡'
