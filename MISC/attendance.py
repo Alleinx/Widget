@@ -13,8 +13,8 @@ def get_student_info_dict(namelist_path: str, total_lab_counter: int=14):
     
     Container Format:
         - STU_ID    : student id.
-        - EN_NAME  : student's english name
-        - CN_NAME  : student's english name
+        - EN_NAME   : student's english name
+        - CN_NAME   : student's english name
         - STU_EMAIL : student's email address
         - Lab1, Lab2, ..., Lab13
     """
@@ -82,6 +82,7 @@ def save_to_excel_file(students: dict, total_lab_counter:int=14):
         container['CN_NAME'].append(student['CN_NAME'])
         container['STU_ID'].append(student['STU_ID'])
         container['STU_EMAIL'].append(student['STU_EMAIL'])
+
         for key in lab_keys:
             container[key].append(student[key])
 
@@ -169,7 +170,7 @@ def count_cpp_files(files: list, strict_match=True):
         if '.c' in file or '.cpp' in file:
 
             if strict_match:
-                if file[-3:] == '.c' or file[-4:] == '.cpp':
+                if file[-2:] == '.c' or file[-4:] == '.cpp':
                     counter += 1
                     unique_cpp_file.append(file)
             else:
