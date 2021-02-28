@@ -3,7 +3,17 @@ syntax on
 
 set mouse=a
 set encoding=utf-8
-set number
+
+" -----------------
+" display line settings:
+
+" relative line:
+set relativenumber
+" absolute line:
+set number 
+set ruler
+" -----------------
+
 set cursorline
 set showmatch
 set incsearch
@@ -18,11 +28,19 @@ set shiftwidth=4
 set expandtab
 set nospell
 
+
 "---------------------color scheme---------------------------"
 " colorscheme base
-colorscheme peaksea
+" colorscheme peaksea
+
+" colorscheme peachpuff
+
+" colorscheme monokai
+colorscheme tender
 set termguicolors
 set background=dark
+" highlight Comment ctermfg=green
+
 
 "-----------------------Netrw config-------------------------"
 " let g:netrw_liststyle = 3
@@ -62,7 +80,8 @@ nmap <C-n> <ESC>:PymodeLintAuto<CR>
 nmap <F12> :TagbarToggle<CR>
 nmap <F3> :only<CR>
 nmap <F1> ZL
-nmap <F2> ZC
+" nmap <F2> ZC
+nmap <F2> <ESC>:%y*<CR>
 
 inoremap <Left> <C-h>
 cnoremap <Left> <C-h>
@@ -99,6 +118,8 @@ Bundle 'majutsushi/tagbar'
 Bundle 'kamykn/spelunker.vim'
 Bundle 'morhetz/gruvbox'
 Bundle 'vim-scripts/peaksea'
+Bundle 'vim-python/python-syntax'
+Bundle 'jacoborus/tender.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -126,11 +147,14 @@ let g:spelunker_target_min_char_len = 0
 let g:spelunker_max_suggest_words = 7
 let g:spelunker_max_hi_words_each_buf = 50
 
+" python syntax highlight:
+let g:python_highlight_all=1
+
 highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#f0edcc
 
 " -----------------------------------------------------------------------------------------
 " vim-airline:
-let g:airline_theme='bubblegum'
+let g:airline_theme='minimalist'
 let g:airline_section_b = '%{strftime("%c")}'
 
 " format of status bar:
