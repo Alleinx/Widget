@@ -32,15 +32,14 @@ set nospell
 "---------------------color scheme---------------------------"
 " colorscheme base
 " colorscheme peaksea
-
 " colorscheme peachpuff
-
 " colorscheme monokai
-colorscheme tender
+
 set termguicolors
 set background=dark
-" highlight Comment ctermfg=green
-
+" colorscheme gruvbox
+colorscheme default
+" highlight Comment ctermfg=LightGrey
 
 "-----------------------Netrw config-------------------------"
 " let g:netrw_liststyle = 3
@@ -120,6 +119,7 @@ Bundle 'morhetz/gruvbox'
 Bundle 'vim-scripts/peaksea'
 Bundle 'vim-python/python-syntax'
 Bundle 'jacoborus/tender.vim'
+Bundle 'neoclide/coc.nvim', {'branch': 'release'}
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -172,3 +172,10 @@ let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.maxlinenr = ''
 let g:airline_symbols.dirty='⚡'
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-k> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif

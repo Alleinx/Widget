@@ -1,9 +1,152 @@
-alias gitdir
-alias paper_notes
-alias python
-alias thinking
-alias notes
-alias study
-alias pdb='python -m ipdb'
-alias create_ctags='/usr/local/bin/ctags -R .'
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/user/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="agnoster"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(zsh-autosuggestions git zsh-syntax-highlighting)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home
+# export PATH=$JAVA_HOME/bin:$PATH
+# export CLASS_PATH=$JAVA_HOME/lib
+
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home
+# JAVA_HOME=/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/Users/user/Library/Java/JavaVirtualMachines/openjdk-17/Contents/Home
+PATH=$JAVA_HOME/bin:$PATH
+export CLASS_PATH=$JAVA_HOME/lib
+
+#disable auto correction:
+unsetopt correct_all
+
+alias activate_tensorFlow="source /Users/user/venv/bin/activate"
+alias gitdir="cd /Users/user/Documents/Documents/restore\ code/Github/"
+alias paper_notes="cd /Users/user/Documents/Documents/Notes/Paper_notes"
+alias python="/usr/local/bin/python3"
+alias newserver='ssh -i .ssh/server_rsa fltsm@172.31.10.192'
+alias notes='cd /Users/user/Documents/Documents/Notes'
+alias pdb='python -m ipdb'
+source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+alias create_ctags='/usr/local/bin/ctags -R .'
+alias research_dir='cd /Users/user/Documents/Documents/Research'
+alias sty_timer='python /Users/user/Documents/Documents/restore\ code/Github/Widget/sty_timer/sty_timer.py'
+alias pcserver='ssh fltsm@js.uicds.xyz -p 60001'
+alias server='ssh nlp@172.16.179.156'
+alias 159server='ssh nlp@172.16.179.159'
+alias vi='/usr/bin/vim'
+alias notes_recipe='cd /Users/user/Documents/Documents/Life/Recipes'
+alias showdisk='du -sh * | sort -nr'
+# hide user name:
+# DEFAULT_USER='noObject'
+alias edin_server='ssh s2144864@student.ssh.inf.ed.ac.uk'
+alias nutcloud_path='cd /Users/user/Documents/Documents/坚果云_Local'
+
+# $1: is the port number on your pc
+# $2: is the port number of jupyter notebook on the server.
+connect_to_dice_jupyter() {
+    ssh -N -o ProxyCommand="ssh -q s2144864@student.ssh.inf.ed.ac.uk nc selby.inf.ed.ac.uk 22" -L "$1":localhost:"$2" s2144864@selby.inf.ed.ac.uk
+}
+
+if type nvim > /dev/null 2>&1; then
+  alias vi='nvim'
+  alias vim='nvim'
+fi
+#
+#
+
+# SET_HOME=/usr/local/Cellar/sbt/1.5.5
+# PATH=$PATH:$SET_HOME/bin
+# export SET_HOME PATH
+# export PYSPARK_SUBMIT_ARGS="--master local[2] pyspark-shell"
+# export SPARK_HOME=/Users/user/Downloads/spark
+# export PATH=$PATH:$SPARK_HOME/bin
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
