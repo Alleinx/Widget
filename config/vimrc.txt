@@ -37,8 +37,7 @@ set nospell
 
 set termguicolors
 set background=dark
-" colorscheme gruvbox
-colorscheme default
+colorscheme papercolor
 " highlight Comment ctermfg=LightGrey
 
 "-----------------------Netrw config-------------------------"
@@ -120,6 +119,7 @@ Bundle 'vim-scripts/peaksea'
 Bundle 'vim-python/python-syntax'
 Bundle 'jacoborus/tender.vim'
 Bundle 'neoclide/coc.nvim', {'branch': 'release'}
+Bundle 'NLKNguyen/papercolor-theme'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
