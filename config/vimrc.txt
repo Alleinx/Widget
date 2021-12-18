@@ -34,11 +34,12 @@ set nospell
 " colorscheme peaksea
 " colorscheme peachpuff
 " colorscheme monokai
+" colorscheme gruvbox
 
 set termguicolors
 set background=dark
-colorscheme papercolor
-" highlight Comment ctermfg=LightGrey
+colorscheme afterglow
+let g:afterglow_inherit_background=1
 
 "-----------------------Netrw config-------------------------"
 " let g:netrw_liststyle = 3
@@ -120,6 +121,8 @@ Bundle 'vim-python/python-syntax'
 Bundle 'jacoborus/tender.vim'
 Bundle 'neoclide/coc.nvim', {'branch': 'release'}
 Bundle 'NLKNguyen/papercolor-theme'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'danilo-augusto/vim-afterglow'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -154,7 +157,8 @@ highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#f0e
 
 " -----------------------------------------------------------------------------------------
 " vim-airline:
-let g:airline_theme='minimalist'
+" let g:airline_theme='minimalist'
+let g:airline_theme='afterglow'
 let g:airline_section_b = '%{strftime("%c")}'
 
 " format of status bar:
@@ -169,8 +173,10 @@ let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
+" let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.linenr = 'L:'
+" let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = ' C'
 let g:airline_symbols.dirty='⚡'
 
 " Use <c-space> to trigger completion.
